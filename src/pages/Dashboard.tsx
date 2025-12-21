@@ -15,33 +15,6 @@ const ROOM_ICONS: Record<RoomId, string> = {
   screens: '🖥️',
 };
 
-const roomInfo: Record<RoomId, { description: string; mapping: string }> = {
-  tutorial: {
-    description: 'Learn programming fundamentals and concepts',
-    mapping: 'Web apps, components, state, APIs, databases',
-  },
-  upload: {
-    description: 'Dataset ingestion and CSV/Excel parsing',
-    mapping: 'Admin upload page → datasets table',
-  },
-  clean: {
-    description: 'Data sanitisation and PII handling',
-    mapping: 'raw_data → sanitized_data transformation',
-  },
-  store: {
-    description: 'PostgreSQL tables and Row-Level Security',
-    mapping: 'users, datasets, dataset_reviews tables',
-  },
-  brain: {
-    description: 'Supabase Edge Functions and OpenAI analysis',
-    mapping: 'analyze-review, batch-analyze, generate-recommendations',
-  },
-  screens: {
-    description: 'React pages, components, and dashboards',
-    mapping: 'Performance Reviews, Manager Capabilities, Engagement Analytics',
-  },
-};
-
 function getStatusColor(status: SystemStatus): string {
   switch (status) {
     case 'healthy':

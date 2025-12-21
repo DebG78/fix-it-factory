@@ -306,7 +306,13 @@ export interface EdgeFunction {
     | 'batch-analyze-reviews'
     | 'batch-analyze-skills'
     | 'generate-recommendations'
-    | 'check-quota';
+    | 'check-quota'
+    | 'analyze-skills-batch'
+    | 'individual-recommendations'
+    | 'risk-assessment'
+    | 'generate-executive-insights'
+    | 'generate-diagnostics'
+    | 'analyze-manager-capabilities';
 }
 
 export interface AnalysisJob {

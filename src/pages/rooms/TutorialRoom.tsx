@@ -340,7 +340,7 @@ export default function TutorialRoom() {
       </section>
 
       {/* Challenges */}
-      <ChallengeList roomId="tutorial" />
+      <ChallengeList room="tutorial" />
     </div>
   );
 }
