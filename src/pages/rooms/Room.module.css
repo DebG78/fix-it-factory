@@ -1899,3 +1899,86 @@
   font-size: 18px;
   color: var(--accent-primary);
 }
+
+/* =============================================================================
+   Violation Alert (Clean Room)
+   ============================================================================= */
+
+.violationAlert {
+  background-color: rgba(255, 71, 87, 0.1);
+  border: 2px solid var(--status-error);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  animation: violationPulse 0.5s ease-out;
+}
+
+@keyframes violationPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.violationHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.violationIcon {
+  font-size: 20px;
+}
+
+.violationTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--status-error);
+  flex: 1;
+}
+
+.violationDismiss {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition-fast);
+}
+
+.violationDismiss:hover {
+  color: var(--text-primary);
+}
+
+.violationList {
+  margin: 0 0 var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.violationList li {
+  margin-bottom: 4px;
+}
+
+.violationList li:first-child {
+  color: var(--status-error);
+  font-weight: 600;
+}
+
+.violationHint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-primary);
+}

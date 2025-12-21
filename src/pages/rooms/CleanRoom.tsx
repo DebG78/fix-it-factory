@@ -38,6 +38,7 @@ export default function CleanRoom() {
   const [rawData] = useState(SAMPLE_RAW_DATA);
   const [sanitizedData, setSanitizedData] = useState<typeof SAMPLE_RAW_DATA>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [violationAlert, setViolationAlert] = useState<string[] | null>(null);
 
   const runSanitisation = async () => {
     if (isProcessing) return;
@@ -181,10 +182,21 @@ export default function CleanRoom() {
   };
 
   const simulatePrivacyViolation = async () => {
+    const violations = [
+      'TD user accessed raw_data field - VIOLATION',
+      'Sanitisation bypassed: UI masking instead of data transformation',
+      'Fix required: Move sanitisation to Clean Room, not Screens Room',
+    ];
+
+    setViolationAlert(violations);
     addLog('warn', 'clean', 'Simulating privacy violation scenario...');
-    addLog('error', 'screens', 'TD user accessed raw_data field - VIOLATION');
-    addLog('error', 'clean', 'Sanitisation bypassed: UI masking instead of data transformation');
-    addLog('warn', 'clean', 'Fix required: Move sanitisation to Clean Room, not Screens Room');
+    addLog('error', 'screens', violations[0]);
+    addLog('error', 'clean', violations[1]);
+    addLog('warn', 'clean', violations[2]);
+  };
+
+  const dismissViolationAlert = () => {
+    setViolationAlert(null);
   };
 
   return (
@@ -205,6 +217,26 @@ export default function CleanRoom() {
           </button>
         </div>
       </header>
+
+      {/* Violation Alert */}
+      {violationAlert && (
+        <div className={styles.violationAlert}>
+          <div className={styles.violationHeader}>
+            <span className={styles.violationIcon}>⚠️</span>
+            <span className={styles.violationTitle}>Privacy Violation Detected!</span>
+            <button className={styles.violationDismiss} onClick={dismissViolationAlert}>×</button>
+          </div>
+          <ul className={styles.violationList}>
+            {violationAlert.map((msg, idx) => (
+              <li key={idx}>{msg}</li>
+            ))}
+          </ul>
+          <p className={styles.violationHint}>
+            This demonstrates what happens when sanitisation is bypassed. In Calibrate Kindly,
+            all PII must be removed in the Clean Room before data reaches any user-facing screen.
+          </p>
+        </div>
+      )}
 
       <div className={styles.content}>
         {/* Sanitisation Pipeline */}
