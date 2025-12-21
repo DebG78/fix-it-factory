@@ -267,3 +267,61 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100dvh;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .header {
+    padding-top: 60px; /* Space for hamburger button */
+  }
+
+  .navItem {
+    padding: var(--spacing-md);
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .navItem svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .sectionLabel {
+    padding: var(--spacing-md);
+    font-size: 11px;
+  }
+
+  .footer {
+    padding: var(--spacing-md);
+  }
+
+  .levelBadge {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .levelLabel {
+    font-size: 11px;
+  }
+
+  .statVal {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 85vw;
+    max-width: 280px;
+  }
+}

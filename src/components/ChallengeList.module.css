@@ -180,3 +180,61 @@
   text-align: center;
   font-style: italic;
 }
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-sm);
+  }
+
+  .challenge {
+    padding: var(--spacing-sm);
+    min-height: 44px;
+  }
+
+  .challengeHeader {
+    flex-wrap: wrap;
+  }
+
+  .challengeTitle {
+    font-size: 12px;
+  }
+
+  .challengeMeta {
+    width: 100%;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+  }
+
+  .showMore {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 12px;
+  }
+
+  .progress {
+    font-size: 11px;
+  }
+
+  .challengeTitle {
+    font-size: 11px;
+  }
+
+  .challengeMeta {
+    font-size: 10px;
+  }
+
+  .symptom {
+    font-size: 10px;
+  }
+}

@@ -494,3 +494,138 @@
 .skipBtn:hover {
   color: var(--text-secondary);
 }
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .panel {
+    padding: var(--spacing-md);
+    max-height: none;
+    margin-top: var(--spacing-md);
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .headerLeft {
+    flex-wrap: wrap;
+  }
+
+  .closeBtn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .scenario {
+    padding: var(--spacing-sm);
+  }
+
+  .scenarioDescription {
+    font-size: 12px;
+  }
+
+  .symptom,
+  .context {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .symptomLabel,
+  .contextLabel {
+    min-width: auto;
+  }
+
+  .questionPrompt {
+    font-size: 14px;
+  }
+
+  .option {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .optionLetter {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .optionText {
+    font-size: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .submitBtn,
+  .completeBtn,
+  .tryAgainBtn,
+  .skipBtn {
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-md);
+    min-height: 44px;
+  }
+
+  .failActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .codeExample pre {
+    font-size: 10px;
+    padding: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    border-radius: var(--radius-md);
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .scenarioTitle {
+    font-size: 12px;
+  }
+
+  .scenarioDescription {
+    font-size: 11px;
+  }
+
+  .questionPrompt {
+    font-size: 13px;
+  }
+
+  .optionText {
+    font-size: 11px;
+  }
+
+  .feedbackTitle {
+    font-size: 14px;
+  }
+
+  .feedbackText {
+    font-size: 12px;
+  }
+
+  .explanation p {
+    font-size: 12px;
+  }
+}

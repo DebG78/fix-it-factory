@@ -164,3 +164,64 @@
 .logDebug .level {
   color: var(--text-muted);
 }
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .expanded {
+    height: 150px;
+    min-height: 150px;
+  }
+
+  .header {
+    min-height: 44px;
+  }
+
+  .headerLeft {
+    flex: 1;
+    gap: var(--spacing-sm);
+  }
+
+  .headerRight {
+    gap: var(--spacing-sm);
+  }
+
+  .filters {
+    display: none; /* Hide filters on mobile - too cramped */
+  }
+
+  .content {
+    font-size: 10px;
+  }
+
+  .logEntry {
+    flex-wrap: wrap;
+  }
+
+  .timestamp {
+    font-size: 9px;
+  }
+
+  .message {
+    width: 100%;
+    padding-left: var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .expanded {
+    height: 120px;
+    min-height: 120px;
+  }
+
+  .title {
+    font-size: 10px;
+  }
+
+  .content {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 9px;
+  }
+}

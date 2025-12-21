@@ -78,6 +78,17 @@ body {
   background-color: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  /* Improve touch scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile viewport height fix */
+@supports (height: 100dvh) {
+  html, body, #root {
+    height: 100dvh;
+  }
 }
 
 /* Scrollbar styling */
@@ -173,4 +184,45 @@ body {
 
 .animate-fade-in {
   animation: fadeIn var(--transition-normal) forwards;
+}
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+/* Hide scrollbars on mobile for cleaner look */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /* Ensure touch targets are at least 44px */
+  button,
+  a,
+  input,
+  select,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  /* Reduce spacing on mobile */
+  :root {
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  :root {
+    --spacing-md: 10px;
+    --spacing-lg: 14px;
+    --spacing-xl: 20px;
+  }
+
+  body {
+    font-size: 13px;
+  }
 }

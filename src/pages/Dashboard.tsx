@@ -247,28 +247,6 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* Recent Activity Panel */}
-        <section className={styles.panel}>
-          <h2 className={styles.panelTitle}>Recent Activity</h2>
-          <div className={styles.activityContent}>
-            {state.logs.length === 0 ? (
-              <p className={styles.emptyState}>No activity yet. Head to the Tutorial room to start learning!</p>
-            ) : (
-              <div className={styles.activityList}>
-                {state.logs.slice(0, 8).map((log) => (
-                  <div key={log.id} className={`${styles.activityItem} ${styles[log.level]}`}>
-                    <span className={styles.activityTime}>
-                      {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </span>
-                    <span className={styles.activitySource}>[{log.source}]</span>
-                    <span className={styles.activityMessage}>{log.message}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
         {/* Quick Info Panel */}
         <section className={styles.panel}>
           <h2 className={styles.panelTitle}>Calibrate Kindly Architecture</h2>

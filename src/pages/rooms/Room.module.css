@@ -1982,3 +1982,208 @@
   padding-top: var(--spacing-sm);
   border-top: 1px solid var(--border-primary);
 }
+
+/* =============================================================================
+   Mobile Responsiveness
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actionBtn {
+    flex: 1;
+    text-align: center;
+  }
+
+  .splitPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .columns > .panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .schemaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pipeline {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .pipelineConnector {
+    transform: rotate(90deg);
+    width: 40px;
+  }
+
+  .dataComparison {
+    flex-direction: column;
+  }
+
+  .transformArrow {
+    transform: rotate(90deg);
+    padding: var(--spacing-sm) 0;
+  }
+
+  .headerMeta {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .fileProgress {
+    width: 100%;
+  }
+
+  .fileItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .piiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .functionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .componentsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pagesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .contextGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .lifecycle {
+    flex-direction: column;
+  }
+
+  .lifecycleArrow {
+    transform: rotate(90deg);
+  }
+
+  .dataFlowDiagram {
+    flex-direction: column;
+  }
+
+  .flowArrow {
+    transform: rotate(90deg);
+  }
+
+  .learningPath {
+    flex-direction: column;
+  }
+
+  .pathArrow {
+    transform: rotate(90deg);
+  }
+
+  .tableCard {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .apiHealth {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quotaDisplay {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .panel {
+    padding: var(--spacing-sm);
+  }
+
+  .panelTitle {
+    font-size: 10px;
+  }
+
+  .conceptCard {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .conceptTitle {
+    font-size: 11px;
+  }
+
+  .conceptIcon {
+    font-size: 16px;
+  }
+
+  .stageBox {
+    width: 40px;
+    height: 40px;
+  }
+
+  .lifecycleStep {
+    min-width: 100px;
+    padding: var(--spacing-xs);
+  }
+
+  .stepNumber {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .stepName {
+    font-size: 10px;
+  }
+
+  .stepDesc {
+    font-size: 8px;
+  }
+
+  .codeBlock {
+    font-size: 10px;
+    padding: var(--spacing-sm);
+  }
+
+  .pathStep {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .pathNumber {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .pathContent strong {
+    font-size: 10px;
+  }
+
+  .pathContent p {
+    font-size: 9px;
+  }
+}

@@ -678,24 +678,81 @@
   }
 }
 
-@media (max-width: 600px) {
-  .roomProgressGrid {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .resetBtn {
+    align-self: flex-start;
+  }
+
+  .statBox {
+    flex: 0 0 calc(50% - var(--spacing-sm));
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .statValue {
+    font-size: 16px;
   }
 
   .phaseProgressGrid {
     grid-template-columns: 1fr;
   }
 
+  .roomProgressGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .roomProgressGrid {
+    grid-template-columns: 1fr;
+  }
+
   .statBox {
-    flex: 0 0 calc(50% - var(--spacing-md));
+    flex: 0 0 calc(50% - var(--spacing-xs));
+  }
+
+  .statValue {
+    font-size: 14px;
+  }
+
+  .statLabel {
+    font-size: 9px;
   }
 
   .flowDiagram {
     flex-direction: column;
+    gap: var(--spacing-xs);
   }
 
   .flowArrow {
     transform: rotate(90deg);
+  }
+
+  .flowArrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .flowBox {
+    min-width: 60px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .panelTitle {
+    font-size: 11px;
+  }
+
+  .infoItem {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: flex-start;
   }
 }
