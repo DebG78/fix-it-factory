@@ -390,6 +390,97 @@
   transition: width 0.3s ease;
 }
 
+/* Phase Stat Box */
+.phaseStatBox {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(0, 212, 170, 0.1) 100%);
+  border-color: var(--accent-primary);
+}
+
+/* Phase Progress Section */
+.phaseProgressSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.phaseProgressGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.phaseProgressCard {
+  padding: var(--spacing-sm);
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-primary);
+  transition: all var(--transition-fast);
+  opacity: 0.7;
+}
+
+.phaseProgressCard.currentPhase {
+  border-color: var(--accent-primary);
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(0, 212, 170, 0.1) 100%);
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(0, 212, 170, 0.2);
+}
+
+.phaseProgressCard.phaseComplete {
+  border-color: var(--status-healthy);
+  background-color: rgba(0, 212, 170, 0.05);
+  opacity: 1;
+}
+
+.phaseProgressHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xs);
+}
+
+.phaseProgressIcon {
+  font-size: 16px;
+}
+
+.phaseProgressName {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.phaseProgressCount {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.phaseProgressBar {
+  height: 6px;
+  background-color: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-xs);
+}
+
+.phaseProgressFill {
+  height: 100%;
+  background-color: var(--accent-primary);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.phaseProgressCard.phaseComplete .phaseProgressFill {
+  background-color: var(--status-healthy);
+}
+
+.phaseXpRange {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-align: center;
+}
+
 /* Room Progress Section */
 .roomProgressSection {
   display: flex;
@@ -423,6 +514,11 @@
 .roomProgressCard.roomComplete {
   border-color: var(--status-healthy);
   background-color: rgba(0, 212, 170, 0.05);
+}
+
+.roomProgressCard.roomLocked {
+  opacity: 0.5;
+  border-color: var(--border-primary);
 }
 
 .roomProgressHeader {
@@ -568,6 +664,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .phaseProgressGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .statsRow {
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -580,6 +680,10 @@
 
 @media (max-width: 600px) {
   .roomProgressGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .phaseProgressGrid {
     grid-template-columns: 1fr;
   }
 

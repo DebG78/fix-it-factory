@@ -22,8 +22,9 @@ interface SanitisationStage {
 
 const SAMPLE_RAW_DATA = [
   { reviewer_name: 'John Smith', employee_name: 'Sarah Johnson', review_text: 'Sarah has shown excellent leadership...', rating: 4 },
-  { reviewer_name: 'Emily Davis', employee_name: 'Michael Brown', review_text: 'Michael needs improvement in communication...', rating: 3 },
-  { reviewer_name: 'David Wilson', employee_name: 'Jennifer Lee', review_text: 'Contact Jennifer at jennifer.lee@company.com for details...', rating: 5 },
+  { reviewer_name: 'John Smith', employee_name: 'Michael Brown', review_text: 'Michael needs improvement in communication...', rating: 3 },
+  { reviewer_name: 'John Smith', employee_name: 'Jennifer Lee', review_text: 'Contact Jennifer at jennifer.lee@company.com for details...', rating: 5 },
+  { reviewer_name: 'Emily Davis', employee_name: 'Sarah Johnson', review_text: 'Sarah consistently meets her targets...', rating: 4 },
 ];
 
 export default function CleanRoom() {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGame } from '@/context/GameContext';
-import { SKILLS, getChallengesByRoom, getAvailableChallenges } from '@/data/challenges';
+import { SKILLS, getChallengesByRoom, getAvailableChallenges, isRoomUnlocked, calculatePhase } from '@/data/challenges';
 import type { RoomId } from '@/types';
 import type { Challenge } from '@/data/challenges';
 import ChallengePanel from './ChallengePanel';
@@ -18,6 +18,10 @@ export default function ChallengeList({ room }: ChallengeListProps) {
   const roomChallenges = getChallengesByRoom(room);
   const allAvailableChallenges = getAvailableChallenges(state.progression.completedChallenges);
   const availableChallenges = allAvailableChallenges.filter(c => c.room === room);
+
+  // Check if this room is unlocked
+  const roomUnlocked = isRoomUnlocked(room, state.progression.completedChallenges);
+  const currentPhase = calculatePhase(state.progression.completedChallenges);
 
   const completedCount = roomChallenges.filter((c: Challenge) =>
     state.progression.completedChallenges.includes(c.id)
@@ -89,6 +93,38 @@ export default function ChallengeList({ room }: ChallengeListProps) {
 
   const displayedChallenges: Challenge[] = showAll ? roomChallenges : roomChallenges.slice(0, 3);
 
+  // Generate unlock message based on what's needed
+  const getUnlockMessage = (): string => {
+    if (!roomUnlocked) {
+      if (room === 'tutorial') {
+        return 'Start with the first challenge!';
+      }
+      return 'Complete the Tutorial to unlock this room.';
+    }
+    if (currentPhase === 'operator' && roomChallenges.some(c => c.phase === 'engineer')) {
+      return 'Complete all Operator challenges across all rooms to unlock Engineer challenges.';
+    }
+    if (currentPhase === 'engineer' && roomChallenges.some(c => c.phase === 'architect')) {
+      return 'Complete all Engineer challenges to unlock Architect challenges.';
+    }
+    return 'Complete prerequisites to unlock more challenges.';
+  };
+
+  // If room is locked, show locked state
+  if (!roomUnlocked) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h3 className={styles.title}>Challenges</h3>
+          <span className={styles.progress}>🔒 Locked</span>
+        </div>
+        <div className={styles.lockedMessage}>
+          {getUnlockMessage()}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -145,7 +181,7 @@ export default function ChallengeList({ room }: ChallengeListProps) {
 
         {availableChallenges.length === 0 && completedCount < roomChallenges.length && (
           <div className={styles.lockedMessage}>
-            Complete challenges in earlier rooms to unlock more here.
+            {getUnlockMessage()}
           </div>
         )}
       </div>

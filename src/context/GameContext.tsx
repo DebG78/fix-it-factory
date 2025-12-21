@@ -11,6 +11,7 @@ import type {
   Achievement,
 } from '@/types';
 import { XP_LEVELS, DAILY_CHALLENGE_GOAL } from '@/types';
+import { calculatePhase } from '@/data/challenges';
 
 // =============================================================================
 // LocalStorage Keys
@@ -495,6 +496,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const today = getTodayDate();
       const newXp = state.progression.xp + xpEarned;
       const newLevel = calculateLevel(newXp);
+      // Phase is now based on completion status, not XP
+      const newCompletedChallenges = state.progression.completedChallenges.includes(challengeId)
+        ? state.progression.completedChallenges
+        : [...state.progression.completedChallenges, challengeId];
+      const newPhase = calculatePhase(newCompletedChallenges);
 
       // Update daily progress
       let dailyProgress = state.progression.dailyProgress;
@@ -563,13 +569,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         score: state.score + xpEarned,
+        phase: newPhase,
         progression: {
           ...state.progression,
           xp: newXp,
           level: newLevel,
-          completedChallenges: state.progression.completedChallenges.includes(challengeId)
-            ? state.progression.completedChallenges
-            : [...state.progression.completedChallenges, challengeId],
+          completedChallenges: newCompletedChallenges,
           challengeAttempts: {
             ...state.progression.challengeAttempts,
             [challengeId]: newAttempt,
@@ -681,6 +686,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case 'LOAD_PROGRESSION':
       return {
         ...state,
+        phase: calculatePhase(action.progression.completedChallenges),
         progression: action.progression,
       };
 

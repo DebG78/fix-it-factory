@@ -276,6 +276,68 @@ export const SKILLS: Skill[] = [
     prerequisites: ['screens-data'],
     challengesRequired: ['screens-4-blank-panel', 'screens-5-stale-context'],
   },
+
+  // Architect Skills
+  {
+    id: 'tutorial-architect',
+    name: 'System Architecture',
+    description: 'Design features and debug cross-room issues',
+    room: 'tutorial',
+    phase: 'architect',
+    icon: '🏗️',
+    prerequisites: ['tutorial-data-flow'],
+    challengesRequired: ['tutorial-9-architect-design', 'tutorial-10-system-thinking'],
+  },
+  {
+    id: 'upload-architect',
+    name: 'Upload Architecture',
+    description: 'Design scalable upload systems and handle schema evolution',
+    room: 'upload',
+    phase: 'architect',
+    icon: '📐',
+    prerequisites: ['upload-debugging'],
+    challengesRequired: ['upload-6-bulk-upload-design', 'upload-7-schema-evolution'],
+  },
+  {
+    id: 'clean-architect',
+    name: 'Privacy Architecture',
+    description: 'Design extensible PII systems and ensure compliance',
+    room: 'clean',
+    phase: 'architect',
+    icon: '🛡️',
+    prerequisites: ['clean-anonymisation'],
+    challengesRequired: ['clean-6-pipeline-design', 'clean-7-compliance-audit'],
+  },
+  {
+    id: 'store-architect',
+    name: 'Database Architecture',
+    description: 'Design RLS policies and optimize query performance',
+    room: 'store',
+    phase: 'architect',
+    icon: '🏛️',
+    prerequisites: ['store-caching'],
+    challengesRequired: ['store-6-rls-design', 'store-7-performance-optimization'],
+  },
+  {
+    id: 'brain-architect',
+    name: 'AI Pipeline Architecture',
+    description: 'Design scalable batch processing and resilient systems',
+    room: 'brain',
+    phase: 'architect',
+    icon: '🧬',
+    prerequisites: ['brain-failures'],
+    challengesRequired: ['brain-6-function-design', 'brain-7-failure-recovery'],
+  },
+  {
+    id: 'screens-architect',
+    name: 'Frontend Architecture',
+    description: 'Design reusable components and optimize render performance',
+    room: 'screens',
+    phase: 'architect',
+    icon: '🎨',
+    prerequisites: ['screens-debugging'],
+    challengesRequired: ['screens-6-component-design', 'screens-7-performance-debugging'],
+  },
 ];
 
 // =============================================================================
@@ -783,7 +845,7 @@ const EXPECTED_COLUMNS = [
       { id: 'h1', text: 'Look at what columns the system expects vs what the CSV has', xpCost: 20 },
       { id: 'h2', text: 'Check the schema validation logs for "column" or "mapping" errors', xpCost: 30 },
     ],
-    prerequisites: [],
+    prerequisites: ['tutorial-8-ck-overview'], // Tutorial complete required
     skillsTaught: ['upload-basics', 'upload-schema'],
   },
 
@@ -957,7 +1019,7 @@ const { error } = await supabase.rpc('upload_dataset', {
     hints: [
       { id: 'h1', text: 'Think about database transactions and ACID properties', xpCost: 30 },
     ],
-    prerequisites: ['upload-2-missing-required', 'upload-3-type-mismatch'],
+    prerequisites: ['upload-3-type-mismatch', 'screens-3-data-dependency'], // All operator challenges complete required
     skillsTaught: ['upload-debugging'],
   },
 
@@ -1085,7 +1147,7 @@ const { data } = await supabase
     hints: [
       { id: 'h1', text: 'Look at what field is being queried based on user role', xpCost: 20 },
     ],
-    prerequisites: [],
+    prerequisites: ['upload-3-type-mismatch'], // Upload operator complete required
     skillsTaught: ['clean-basics'],
   },
 
@@ -1288,7 +1350,7 @@ const datasetSalt = dataset.metadata.anonymisation_salt;`,
       { id: 'h1', text: 'Hash functions need the same input to produce the same output', xpCost: 30 },
       { id: 'h2', text: 'A "salt" can make hashing more secure but must be consistent', xpCost: 40 },
     ],
-    prerequisites: ['clean-2-email-leak', 'clean-3-name-visible'],
+    prerequisites: ['clean-3-name-visible', 'upload-5-encoding-issue'], // Previous room engineer required
     skillsTaught: ['clean-anonymisation'],
   },
 
@@ -1414,7 +1476,7 @@ const anonymise = (name, salt) => {
     hints: [
       { id: 'h1', text: 'Look at the table names in the Store Room visualization', xpCost: 10 },
     ],
-    prerequisites: [],
+    prerequisites: ['clean-3-name-visible'], // Clean operator complete required
     skillsTaught: ['store-basics'],
   },
 
@@ -1605,7 +1667,7 @@ queryClient.invalidateQueries(['analytics', datasetId]);`,
     hints: [
       { id: 'h1', text: 'What happens to cached data when source data changes?', xpCost: 30 },
     ],
-    prerequisites: ['store-2-rls-block', 'store-3-wrong-org'],
+    prerequisites: ['store-3-wrong-org', 'clean-5-reversible-hash'], // Previous room engineer required
     skillsTaught: ['store-caching'],
   },
 
@@ -1728,7 +1790,7 @@ const cacheKey = \`reviews-\${datasetId}\`;
     hints: [
       { id: 'h1', text: 'Look at the function names and descriptions', xpCost: 10 },
     ],
-    prerequisites: [],
+    prerequisites: ['store-3-wrong-org'], // Store operator complete required
     skillsTaught: ['brain-basics'],
   },
 
@@ -1930,7 +1992,7 @@ for (const review of pendingReviews) {
     hints: [
       { id: 'h1', text: 'How do you know which reviews still need processing?', xpCost: 30 },
     ],
-    prerequisites: ['brain-2-mqi-scoring', 'brain-3-batch-processing'],
+    prerequisites: ['brain-3-batch-processing', 'store-5-cache-miss'], // Previous room engineer required
     skillsTaught: ['brain-failures'],
   },
 
@@ -2057,7 +2119,7 @@ if (quota.remaining < estimatedCost) {
     hints: [
       { id: 'h1', text: 'Look at the component names - which sounds like it selects?', xpCost: 10 },
     ],
-    prerequisites: [],
+    prerequisites: ['brain-3-batch-processing'], // Brain operator complete required
     skillsTaught: ['screens-basics'],
   },
 
@@ -2262,7 +2324,7 @@ const MQIChart = () => {
     hints: [
       { id: 'h1', text: 'When does React render? When does data arrive?', xpCost: 30 },
     ],
-    prerequisites: ['screens-2-context-loading', 'screens-3-data-dependency'],
+    prerequisites: ['screens-3-data-dependency', 'brain-5-quota-exceeded'], // Previous room engineer required
     skillsTaught: ['screens-debugging'],
   },
 
@@ -2333,11 +2395,816 @@ useEffect(() => {
     prerequisites: ['screens-4-blank-panel'],
     skillsTaught: ['screens-debugging'],
   },
+
+  // =========================================================================
+  // ARCHITECT CHALLENGES - Advanced system design and cross-room debugging
+  // =========================================================================
+
+  // Tutorial Room Architect Challenges
+  {
+    id: 'tutorial-9-architect-design',
+    room: 'tutorial',
+    phase: 'architect',
+    title: 'Design a New Analytics Feature',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Feature Design Challenge',
+      description: 'The product team wants to add a "Manager Comparison" dashboard that shows how different managers perform across key metrics.',
+      symptom: 'You need to design the complete data flow for this new feature.',
+      context: 'Consider all the rooms: where does data come from, how is it processed, where is it stored, and how is it displayed?',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Present a blank architecture diagram to fill in',
+    },
+    question: {
+      prompt: 'What is the CORRECT order of data flow for this new feature?',
+      options: [
+        {
+          id: 'a',
+          text: 'Screens → Brain → Store → Clean → Upload',
+          isCorrect: false,
+          feedback: 'This is backwards! Data flows from source to display, not the other way around.',
+        },
+        {
+          id: 'b',
+          text: 'Upload → Clean → Store → Brain → Screens',
+          isCorrect: true,
+          feedback: 'Correct! Data enters via Upload, gets sanitized in Clean, stored in Store, analyzed in Brain, and displayed in Screens.',
+        },
+        {
+          id: 'c',
+          text: 'Brain → Store → Screens → Upload → Clean',
+          isCorrect: false,
+          feedback: 'Analysis (Brain) cannot happen before data is uploaded and stored.',
+        },
+        {
+          id: 'd',
+          text: 'Store → Upload → Clean → Screens → Brain',
+          isCorrect: false,
+          feedback: 'You cannot store data before it is uploaded and cleaned.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Every feature in Calibrate Kindly follows the same pipeline: Upload (data ingestion) → Clean (PII removal) → Store (database) → Brain (AI analysis) → Screens (UI display). Understanding this flow is essential for designing new features.',
+    },
+    hints: [
+      { id: 'h1', text: 'Think about where raw data first enters the system', xpCost: 25 },
+      { id: 'h2', text: 'PII must be removed before storage or analysis', xpCost: 30 },
+    ],
+    prerequisites: ['screens-5-stale-context'], // All engineer challenges complete required
+    skillsTaught: ['tutorial-architect'],
+  },
+  {
+    id: 'tutorial-10-system-thinking',
+    room: 'tutorial',
+    phase: 'architect',
+    title: 'Cross-Room Debugging',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'System-Wide Issue',
+      description: 'Users report that some reviews show "Analysis Failed" while others work fine. The issue started after a new batch of reviews was uploaded.',
+      symptom: 'Inconsistent analysis results across a dataset.',
+      context: 'This requires investigating multiple rooms to find the root cause.',
+    },
+    simulation: {
+      type: 'diagnose',
+      setup: 'Show logs from all rooms with a mix of errors',
+    },
+    question: {
+      prompt: 'Where should you START your investigation?',
+      options: [
+        {
+          id: 'a',
+          text: 'Screens Room - check if the error display is broken',
+          isCorrect: false,
+          feedback: 'The error IS displaying, so Screens is working. The issue is upstream.',
+        },
+        {
+          id: 'b',
+          text: 'Brain Room - the analysis function might be failing',
+          isCorrect: false,
+          feedback: 'Some analyses work, so Brain is functional. The issue affects specific reviews.',
+        },
+        {
+          id: 'c',
+          text: 'Clean Room - check if sanitization corrupted some reviews',
+          isCorrect: true,
+          feedback: 'Correct! If some reviews fail but not all, and the issue started with a new batch, likely the Clean room is producing malformed data for certain edge cases (e.g., special characters, empty fields).',
+        },
+        {
+          id: 'd',
+          text: 'Store Room - check if database is full',
+          isCorrect: false,
+          feedback: 'If storage was failing, ALL new reviews would fail, not just some.',
+        },
+      ],
+      correctAnswer: 'c',
+      explanation: 'When some items fail but others succeed, look for what makes the failing items different. The Clean room transforms data, and edge cases (special characters, unusual formats) often cause selective failures. Always trace back to where data changes.',
+      codeExample: `// Common Clean Room edge case bug
+const sanitized = text.replace(emailRegex, '[REDACTED]');
+// Bug: If text is null/undefined, this crashes
+// Only affects reviews without email = reviews that work
+// Reviews with email = fail during sanitization`,
+    },
+    hints: [
+      { id: 'h1', text: 'Some reviews work, so the pipeline CAN succeed', xpCost: 30 },
+      { id: 'h2', text: 'What differs between working and failing reviews?', xpCost: 35 },
+    ],
+    prerequisites: ['tutorial-9-architect-design'],
+    skillsTaught: ['tutorial-architect'],
+  },
+
+  // Upload Room Architect Challenges
+  {
+    id: 'upload-6-bulk-upload-design',
+    room: 'upload',
+    phase: 'architect',
+    title: 'Design Bulk Upload Error Handling',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Bulk Upload Architecture',
+      description: 'An admin uploads a CSV with 10,000 rows. Row 5,000 has a schema error. Currently, the entire upload fails.',
+      symptom: 'All-or-nothing upload behavior frustrates users.',
+      context: 'Design a better error handling strategy for large uploads.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show upload progress bar failing at 50%',
+    },
+    question: {
+      prompt: 'What is the BEST approach for handling errors in bulk uploads?',
+      options: [
+        {
+          id: 'a',
+          text: 'Stop at first error and reject entire file',
+          isCorrect: false,
+          feedback: 'This is the current behavior that frustrates users. One bad row kills 9,999 good ones.',
+        },
+        {
+          id: 'b',
+          text: 'Skip all bad rows silently and process good ones',
+          isCorrect: false,
+          feedback: 'Silent failures are dangerous - users won\'t know data is missing.',
+        },
+        {
+          id: 'c',
+          text: 'Process all rows, collect errors, report summary, let user fix and retry failed rows',
+          isCorrect: true,
+          feedback: 'Correct! Process everything possible, give clear error reports with row numbers, and provide a way to fix and retry just the failed rows.',
+        },
+        {
+          id: 'd',
+          text: 'Automatically fix errors using AI',
+          isCorrect: false,
+          feedback: 'Auto-fixing data without user consent is risky. What if the "fix" is wrong?',
+        },
+      ],
+      correctAnswer: 'c',
+      explanation: 'Good bulk operations are: 1) Atomic per-row (one bad row doesn\'t kill others), 2) Transparent (clear error reporting), 3) Recoverable (retry mechanism). This is called "partial success" handling.',
+      codeExample: `// Partial success pattern
+const results = { success: [], failed: [] };
+for (const row of rows) {
+  try {
+    await processRow(row);
+    results.success.push(row.id);
+  } catch (e) {
+    results.failed.push({ row: row.id, error: e.message });
+  }
+}
+return {
+  status: 'partial',
+  processed: results.success.length,
+  failed: results.failed
+};`,
+    },
+    hints: [
+      { id: 'h1', text: 'Think about user experience with large files', xpCost: 25 },
+      { id: 'h2', text: 'How can users recover from partial failures?', xpCost: 30 },
+    ],
+    prerequisites: ['upload-5-encoding-issue'],
+    skillsTaught: ['upload-architect'],
+  },
+  {
+    id: 'upload-7-schema-evolution',
+    room: 'upload',
+    phase: 'architect',
+    title: 'Handle Schema Changes',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'Schema Evolution',
+      description: 'HR updated their export tool. Old CSVs have "employee_name" but new ones have "employee_full_name" and "employee_id" as separate columns.',
+      symptom: 'New uploads fail validation while old format still works.',
+      context: 'Design a system that handles schema evolution gracefully.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show two different CSV schemas side by side',
+    },
+    question: {
+      prompt: 'What is the BEST approach for handling schema evolution?',
+      options: [
+        {
+          id: 'a',
+          text: 'Force all users to use the new schema immediately',
+          isCorrect: false,
+          feedback: 'Breaking changes frustrate users and may not be possible if they export from other systems.',
+        },
+        {
+          id: 'b',
+          text: 'Create versioned schema mappings that transform old formats to new',
+          isCorrect: true,
+          feedback: 'Correct! Schema adapters can transform v1 → v2 format. You support both while encouraging migration to the new format.',
+        },
+        {
+          id: 'c',
+          text: 'Create a separate upload page for each schema version',
+          isCorrect: false,
+          feedback: 'This creates maintenance burden and confusing UX. One upload should handle all formats.',
+        },
+        {
+          id: 'd',
+          text: 'Ask users which version they are uploading each time',
+          isCorrect: false,
+          feedback: 'Users often don\'t know the schema version. Auto-detection is better.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Schema evolution is inevitable. Best practice: 1) Auto-detect schema version from column headers, 2) Apply appropriate transformer, 3) Store in canonical format. This is the "Adapter Pattern" in action.',
+      codeExample: `// Schema adapter pattern
+const schemaAdapters = {
+  v1: (row) => ({
+    employee_id: generateId(row.employee_name),
+    employee_full_name: row.employee_name,
+    // ... transform other fields
+  }),
+  v2: (row) => row, // Already canonical
+};
+
+function detectVersion(columns) {
+  if (columns.includes('employee_name')) return 'v1';
+  if (columns.includes('employee_full_name')) return 'v2';
+}`,
+    },
+    hints: [
+      { id: 'h1', text: 'How can you detect which version a file is?', xpCost: 30 },
+      { id: 'h2', text: 'Research the "Adapter Pattern" in software design', xpCost: 35 },
+    ],
+    prerequisites: ['upload-6-bulk-upload-design'],
+    skillsTaught: ['upload-architect'],
+  },
+
+  // Clean Room Architect Challenges
+  {
+    id: 'clean-6-pipeline-design',
+    room: 'clean',
+    phase: 'architect',
+    title: 'Design Custom PII Rules',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Custom PII Detection',
+      description: 'A client in healthcare needs to detect patient IDs (format: PT-XXXX-YYYY) as PII, but the standard PII detector doesn\'t recognize this format.',
+      symptom: 'Patient IDs are leaking through to sanitized data.',
+      context: 'Design an extensible PII detection system.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show PII pipeline with configurable rules',
+    },
+    question: {
+      prompt: 'How should the PII detection system be designed to support custom patterns?',
+      options: [
+        {
+          id: 'a',
+          text: 'Hardcode all possible PII patterns in the system',
+          isCorrect: false,
+          feedback: 'Impossible to predict all formats. Every client has unique identifiers.',
+        },
+        {
+          id: 'b',
+          text: 'Use a rule-based system where admins can define custom regex patterns',
+          isCorrect: true,
+          feedback: 'Correct! A configurable rule engine allows each organization to define their own PII patterns without code changes.',
+        },
+        {
+          id: 'c',
+          text: 'Train an AI model to detect all PII automatically',
+          isCorrect: false,
+          feedback: 'AI is good for fuzzy matching but can\'t reliably detect custom identifiers it\'s never seen.',
+        },
+        {
+          id: 'd',
+          text: 'Ask clients to pre-process their data before uploading',
+          isCorrect: false,
+          feedback: 'Shifting responsibility to clients is poor UX and error-prone.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Extensible systems use configuration over code. A rule engine with: 1) Built-in rules for common PII, 2) Admin-defined custom patterns, 3) Priority ordering for rule conflicts. This is the "Strategy Pattern" applied to PII detection.',
+      codeExample: `// Rule-based PII detector
+interface PIIRule {
+  name: string;
+  pattern: RegExp;
+  action: 'redact' | 'hash' | 'generalize';
+  priority: number;
+}
+
+const orgRules: PIIRule[] = [
+  { name: 'patient_id', pattern: /PT-\\d{4}-\\d{4}/g, action: 'redact', priority: 1 },
+  { name: 'email', pattern: /[\\w.-]+@[\\w.-]+\\.\\w+/g, action: 'redact', priority: 2 },
+];`,
+    },
+    hints: [
+      { id: 'h1', text: 'How do spam filters handle custom rules?', xpCost: 25 },
+      { id: 'h2', text: 'Research "Strategy Pattern" in software design', xpCost: 30 },
+    ],
+    prerequisites: ['clean-5-reversible-hash'],
+    skillsTaught: ['clean-architect'],
+  },
+  {
+    id: 'clean-7-compliance-audit',
+    room: 'clean',
+    phase: 'architect',
+    title: 'GDPR Compliance Audit',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'Privacy Compliance Review',
+      description: 'The compliance team needs to audit the sanitization pipeline for GDPR compliance before EU launch.',
+      symptom: 'Need to verify all PII is properly handled and documented.',
+      context: 'Review the entire Clean Room pipeline for compliance gaps.',
+    },
+    simulation: {
+      type: 'diagnose',
+      setup: 'Show sanitization pipeline with audit checkpoints',
+    },
+    question: {
+      prompt: 'Which is NOT a GDPR requirement for data sanitization?',
+      options: [
+        {
+          id: 'a',
+          text: 'Document what PII is collected and why',
+          isCorrect: false,
+          feedback: 'This IS required. GDPR Article 30 requires records of processing activities.',
+        },
+        {
+          id: 'b',
+          text: 'Allow users to request deletion of their data',
+          isCorrect: false,
+          feedback: 'This IS required. GDPR Article 17 - "Right to Erasure".',
+        },
+        {
+          id: 'c',
+          text: 'Encrypt all data at rest and in transit',
+          isCorrect: false,
+          feedback: 'This IS required. GDPR Article 32 requires "appropriate security measures".',
+        },
+        {
+          id: 'd',
+          text: 'Store raw PII indefinitely for auditing purposes',
+          isCorrect: true,
+          feedback: 'Correct! GDPR requires data MINIMIZATION. You should NOT keep raw PII longer than necessary. Keeping it "for auditing" violates the purpose limitation principle.',
+        },
+      ],
+      correctAnswer: 'd',
+      explanation: 'GDPR principles: 1) Purpose limitation - only collect for stated purpose, 2) Data minimization - don\'t keep more than needed, 3) Storage limitation - delete when no longer needed. Keeping raw PII "just in case" is a violation.',
+    },
+    hints: [
+      { id: 'h1', text: 'GDPR emphasizes minimizing data collection', xpCost: 30 },
+      { id: 'h2', text: 'What does "purpose limitation" mean?', xpCost: 35 },
+    ],
+    prerequisites: ['clean-6-pipeline-design'],
+    skillsTaught: ['clean-architect'],
+  },
+
+  // Store Room Architect Challenges
+  {
+    id: 'store-6-rls-design',
+    room: 'store',
+    phase: 'architect',
+    title: 'Design New RLS Policy',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Multi-Tenant Access Control',
+      description: 'A new "Department Head" role needs access to reviews only for their department, not the entire organization.',
+      symptom: 'Current RLS only supports org-level access, not department-level.',
+      context: 'Design an RLS policy for fine-grained department access.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show database schema with department relationships',
+    },
+    question: {
+      prompt: 'What is the correct RLS policy for department-level access?',
+      options: [
+        {
+          id: 'a',
+          text: 'Check if user.department_id = review.department_id',
+          isCorrect: false,
+          feedback: 'Reviews don\'t have department_id directly. Need to join through employees.',
+        },
+        {
+          id: 'b',
+          text: 'Check if review.employee_id belongs to user\'s department via JOIN',
+          isCorrect: true,
+          feedback: 'Correct! Use: EXISTS (SELECT 1 FROM employees WHERE employees.id = reviews.employee_id AND employees.department_id = auth.department_id())',
+        },
+        {
+          id: 'c',
+          text: 'Filter in the frontend based on department',
+          isCorrect: false,
+          feedback: 'NEVER rely on frontend for security. RLS must be enforced at database level.',
+        },
+        {
+          id: 'd',
+          text: 'Create separate tables per department',
+          isCorrect: false,
+          feedback: 'This doesn\'t scale. RLS handles multi-tenancy in a single table.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'RLS policies can use JOINs via EXISTS subqueries. The policy checks: "Does this review belong to an employee in my department?" This is more flexible than denormalizing department_id onto every table.',
+      codeExample: `-- Department-level RLS policy
+CREATE POLICY dept_head_reviews ON dataset_reviews
+FOR SELECT
+USING (
+  EXISTS (
+    SELECT 1 FROM employees e
+    WHERE e.id = dataset_reviews.employee_id
+    AND e.department_id = auth.department_id()
+  )
+);`,
+    },
+    hints: [
+      { id: 'h1', text: 'Reviews link to employees, employees link to departments', xpCost: 25 },
+      { id: 'h2', text: 'Research "EXISTS subquery" in SQL', xpCost: 30 },
+    ],
+    prerequisites: ['store-5-cache-miss'],
+    skillsTaught: ['store-architect'],
+  },
+  {
+    id: 'store-7-performance-optimization',
+    room: 'store',
+    phase: 'architect',
+    title: 'Query Performance Crisis',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'Database Performance',
+      description: 'Dashboard queries are timing out as dataset_reviews grows to 1 million rows. The team asks you to design a performance fix.',
+      symptom: 'Queries take 30+ seconds, users see loading spinners.',
+      context: 'Analyze and optimize database performance.',
+    },
+    simulation: {
+      type: 'diagnose',
+      setup: 'Show EXPLAIN ANALYZE output for slow query',
+    },
+    question: {
+      prompt: 'What is the FIRST thing you should check for slow queries?',
+      options: [
+        {
+          id: 'a',
+          text: 'Add more RAM to the database server',
+          isCorrect: false,
+          feedback: 'Hardware upgrades are expensive and often mask the real problem.',
+        },
+        {
+          id: 'b',
+          text: 'Check if appropriate indexes exist for WHERE and JOIN columns',
+          isCorrect: true,
+          feedback: 'Correct! Missing indexes are the #1 cause of slow queries. An index on dataset_id could reduce 30s to 30ms.',
+        },
+        {
+          id: 'c',
+          text: 'Rewrite the query in a different programming language',
+          isCorrect: false,
+          feedback: 'The query runs in the database. The calling language doesn\'t affect query speed.',
+        },
+        {
+          id: 'd',
+          text: 'Delete old data to reduce table size',
+          isCorrect: false,
+          feedback: 'Data deletion should be based on business rules, not performance hacks. Indexes scale better.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Performance debugging order: 1) EXPLAIN ANALYZE the query, 2) Check for sequential scans (missing indexes), 3) Add indexes on filtered/joined columns, 4) Consider query rewriting, 5) Only then consider caching or hardware.',
+      codeExample: `-- Check for missing indexes
+EXPLAIN ANALYZE
+SELECT * FROM dataset_reviews
+WHERE dataset_id = 'abc123';
+
+-- If you see "Seq Scan", add index:
+CREATE INDEX idx_reviews_dataset
+ON dataset_reviews(dataset_id);
+
+-- Query time: 30s → 0.03s`,
+    },
+    hints: [
+      { id: 'h1', text: 'What does "Seq Scan" mean in EXPLAIN output?', xpCost: 30 },
+      { id: 'h2', text: 'Indexes help the database find rows without scanning everything', xpCost: 35 },
+    ],
+    prerequisites: ['store-6-rls-design'],
+    skillsTaught: ['store-architect'],
+  },
+
+  // Brain Room Architect Challenges
+  {
+    id: 'brain-6-function-design',
+    room: 'brain',
+    phase: 'architect',
+    title: 'Design Batch Analysis System',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Scalable Batch Processing',
+      description: 'Current batch-analyze-reviews processes 100 reviews at a time. A client wants to analyze 50,000 reviews. How do you design this?',
+      symptom: 'Batch size limits prevent large-scale analysis.',
+      context: 'Design a scalable batch processing architecture.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show queue-based processing diagram',
+    },
+    question: {
+      prompt: 'What is the BEST architecture for processing 50,000 reviews?',
+      options: [
+        {
+          id: 'a',
+          text: 'Increase batch size to 50,000 and process all at once',
+          isCorrect: false,
+          feedback: 'Memory limits and API timeouts make this impossible. Edge functions have 10s limits.',
+        },
+        {
+          id: 'b',
+          text: 'Use a job queue: split into chunks, process async, track progress',
+          isCorrect: true,
+          feedback: 'Correct! Queue-based processing: 1) Split into 500 batches of 100, 2) Queue each batch, 3) Workers process in parallel, 4) Track progress in database.',
+        },
+        {
+          id: 'c',
+          text: 'Make the user wait while all 50,000 process synchronously',
+          isCorrect: false,
+          feedback: 'Users would wait hours. HTTP requests would timeout. Terrible UX.',
+        },
+        {
+          id: 'd',
+          text: 'Tell the client to split their file into smaller uploads',
+          isCorrect: false,
+          feedback: 'Pushing complexity to users is poor product design.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Large workloads require async processing: 1) Accept job immediately (return job ID), 2) Queue work chunks, 3) Background workers process chunks, 4) Progress stored in database, 5) Client polls for completion. This is the "Producer-Consumer" pattern.',
+      codeExample: `// Job queue pattern
+async function startBatchAnalysis(datasetId) {
+  const reviews = await getReviewIds(datasetId);
+  const chunks = chunkArray(reviews, 100);
+
+  const job = await createJob(datasetId, chunks.length);
+
+  for (const chunk of chunks) {
+    await queueChunk(job.id, chunk);
+  }
+
+  return { jobId: job.id, status: 'processing' };
+}`,
+    },
+    hints: [
+      { id: 'h1', text: 'How do email services send to millions of recipients?', xpCost: 25 },
+      { id: 'h2', text: 'Research "message queue" architectures', xpCost: 30 },
+    ],
+    prerequisites: ['brain-5-quota-exceeded'],
+    skillsTaught: ['brain-architect'],
+  },
+  {
+    id: 'brain-7-failure-recovery',
+    room: 'brain',
+    phase: 'architect',
+    title: 'Design Retry System',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'Resilient AI Pipeline',
+      description: 'OpenAI API occasionally returns 503 errors during peak hours. Currently, failed analyses are lost and require manual retry.',
+      symptom: 'Transient failures cause permanent data loss.',
+      context: 'Design a retry and recovery system for API failures.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show failure scenarios and retry patterns',
+    },
+    question: {
+      prompt: 'What is the BEST retry strategy for transient API failures?',
+      options: [
+        {
+          id: 'a',
+          text: 'Retry immediately in a tight loop until success',
+          isCorrect: false,
+          feedback: 'This can overwhelm a struggling API and get you rate-limited.',
+        },
+        {
+          id: 'b',
+          text: 'Never retry - failures mean something is wrong',
+          isCorrect: false,
+          feedback: 'Transient failures (503, timeouts) are normal. Not retrying loses valid work.',
+        },
+        {
+          id: 'c',
+          text: 'Exponential backoff with jitter, max 3 retries, then dead-letter queue',
+          isCorrect: true,
+          feedback: 'Correct! Exponential backoff (1s, 2s, 4s) gives the API time to recover. Jitter prevents thundering herd. Dead-letter queue captures persistent failures for investigation.',
+        },
+        {
+          id: 'd',
+          text: 'Wait exactly 60 seconds between each retry',
+          isCorrect: false,
+          feedback: 'Fixed delays don\'t adapt to the problem. If API recovers in 1s, you wait 59s unnecessarily.',
+        },
+      ],
+      correctAnswer: 'c',
+      explanation: 'Resilient systems: 1) Detect transient vs permanent failures, 2) Retry with exponential backoff (delays double each time), 3) Add jitter (random variance) to prevent synchronized retries, 4) Set max attempts to prevent infinite loops, 5) Dead-letter queue for failures that exceed retries.',
+      codeExample: `// Exponential backoff with jitter
+async function retryWithBackoff(fn, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (!isTransient(e) || i === maxRetries - 1) throw e;
+      const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
+      const jitter = Math.random() * 1000;
+      await sleep(delay + jitter);
+    }
+  }
+}`,
+    },
+    hints: [
+      { id: 'h1', text: 'Why do retries need random "jitter"?', xpCost: 30 },
+      { id: 'h2', text: 'Research "exponential backoff" pattern', xpCost: 35 },
+    ],
+    prerequisites: ['brain-6-function-design'],
+    skillsTaught: ['brain-architect'],
+  },
+
+  // Screens Room Architect Challenges
+  {
+    id: 'screens-6-component-design',
+    room: 'screens',
+    phase: 'architect',
+    title: 'Design Dashboard Component',
+    difficulty: 4,
+    xpReward: 120,
+    scenario: {
+      title: 'Reusable Chart Component',
+      description: 'The team needs a new "Trend Chart" component that shows metrics over time. It should work with any metric type.',
+      symptom: 'No existing component handles time-series data.',
+      context: 'Design a flexible, reusable chart component.',
+    },
+    simulation: {
+      type: 'design',
+      setup: 'Show component API design canvas',
+    },
+    question: {
+      prompt: 'What is the BEST prop interface for a reusable TrendChart component?',
+      options: [
+        {
+          id: 'a',
+          text: 'Pass raw database rows and let the component query data',
+          isCorrect: false,
+          feedback: 'Components shouldn\'t query databases. Separation of concerns!',
+        },
+        {
+          id: 'b',
+          text: 'Pass formatted data array, labels, and configuration options',
+          isCorrect: true,
+          feedback: 'Correct! { data: [{x, y}], title: string, color: string, yAxisLabel: string } - The component renders data, parent handles fetching and formatting.',
+        },
+        {
+          id: 'c',
+          text: 'Hardcode data inside the component for each use case',
+          isCorrect: false,
+          feedback: 'This creates duplicate components for each metric. Not reusable.',
+        },
+        {
+          id: 'd',
+          text: 'Pass the API endpoint and let the component fetch its own data',
+          isCorrect: false,
+          feedback: 'This couples the component to specific APIs. Less flexible for testing and reuse.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'Good component design: 1) Single responsibility (rendering, not fetching), 2) Props as API contract, 3) Reasonable defaults for optional config, 4) Parent controls data, component controls presentation. This is "Presentational Component" pattern.',
+      codeExample: `interface TrendChartProps {
+  data: Array<{ x: Date; y: number }>;
+  title: string;
+  yAxisLabel?: string;
+  color?: string;
+  showGrid?: boolean;
+}
+
+// Usage:
+<TrendChart
+  data={mqiScores}
+  title="MQI Trend"
+  yAxisLabel="Score"
+/>`,
+    },
+    hints: [
+      { id: 'h1', text: 'What data does the chart NEED to render?', xpCost: 25 },
+      { id: 'h2', text: 'Research "Presentational vs Container Components"', xpCost: 30 },
+    ],
+    prerequisites: ['screens-5-stale-context'],
+    skillsTaught: ['screens-architect'],
+  },
+  {
+    id: 'screens-7-performance-debugging',
+    room: 'screens',
+    phase: 'architect',
+    title: 'Diagnose Render Performance',
+    difficulty: 5,
+    xpReward: 150,
+    scenario: {
+      title: 'UI Performance Crisis',
+      description: 'The Reviews Table re-renders on every keystroke in an unrelated search box, causing visible lag.',
+      symptom: 'Typing in search box causes table to flicker and lag.',
+      context: 'Diagnose and fix unnecessary re-renders.',
+    },
+    simulation: {
+      type: 'diagnose',
+      setup: 'Show React DevTools Profiler with excessive renders',
+    },
+    question: {
+      prompt: 'What is the MOST LIKELY cause of unnecessary re-renders?',
+      options: [
+        {
+          id: 'a',
+          text: 'The search box is broken',
+          isCorrect: false,
+          feedback: 'Search works (keystrokes register). The issue is excessive renders.',
+        },
+        {
+          id: 'b',
+          text: 'State stored too high in the component tree, causing children to re-render',
+          isCorrect: true,
+          feedback: 'Correct! If searchQuery state is in a parent of ReviewsTable, every keystroke re-renders the table. Solution: Move state closer to where it\'s used, or memoize the table.',
+        },
+        {
+          id: 'c',
+          text: 'The browser is too slow',
+          isCorrect: false,
+          feedback: 'The issue is React re-renders, not browser capability.',
+        },
+        {
+          id: 'd',
+          text: 'Too many CSS styles',
+          isCorrect: false,
+          feedback: 'CSS doesn\'t cause React component re-renders.',
+        },
+      ],
+      correctAnswer: 'b',
+      explanation: 'React re-renders all children when parent state changes. Solutions: 1) Lift state DOWN (closer to usage), 2) React.memo() to skip unchanged props, 3) useMemo/useCallback for expensive calculations, 4) State colocation - state lives where it\'s used.',
+      codeExample: `// BAD: State too high
+function App() {
+  const [search, setSearch] = useState('');
+  return (
+    <>
+      <Search value={search} onChange={setSearch} />
+      <ReviewsTable /> {/* Re-renders on every keystroke! */}
+    </>
+  );
+}
+
+// GOOD: State colocated + memo
+function App() {
+  return (
+    <>
+      <Search /> {/* Has its own state */}
+      <MemoizedReviewsTable />
+    </>
+  );
+}`,
+    },
+    hints: [
+      { id: 'h1', text: 'Use React DevTools Profiler to see what triggers renders', xpCost: 30 },
+      { id: 'h2', text: 'Research "state colocation" in React', xpCost: 35 },
+    ],
+    prerequisites: ['screens-6-component-design'],
+    skillsTaught: ['screens-architect'],
+  },
 ];
 
 // =============================================================================
 // Helper Functions
 // =============================================================================
+
+// Room unlock order (data flow pipeline)
+const ROOM_UNLOCK_ORDER: RoomId[] = ['tutorial', 'upload', 'clean', 'store', 'brain', 'screens'];
 
 export function getChallengesByRoom(room: RoomId): Challenge[] {
   return CHALLENGES.filter(c => c.room === room);
@@ -2347,10 +3214,62 @@ export function getChallengesByPhase(phase: Phase): Challenge[] {
   return CHALLENGES.filter(c => c.phase === phase);
 }
 
+// Check if a room is unlocked based on completed challenges
+export function isRoomUnlocked(room: RoomId, completedChallenges: string[]): boolean {
+  if (room === 'tutorial') return true; // Always unlocked
+
+  // Tutorial operator challenges must be complete to unlock other rooms
+  const tutorialOperator = CHALLENGES.filter(c => c.room === 'tutorial' && c.phase === 'operator');
+  const tutorialComplete = tutorialOperator.every(c => completedChallenges.includes(c.id));
+  if (!tutorialComplete) return false;
+
+  // Check previous room's operator challenges for rooms after upload
+  const roomIndex = ROOM_UNLOCK_ORDER.indexOf(room);
+  if (roomIndex <= 1) return true; // upload is unlocked after tutorial complete
+
+  const prevRoom = ROOM_UNLOCK_ORDER[roomIndex - 1];
+  const prevOperator = CHALLENGES.filter(c => c.room === prevRoom && c.phase === 'operator');
+  return prevOperator.every(c => completedChallenges.includes(c.id));
+}
+
+// Get the number of rooms unlocked
+export function getUnlockedRoomCount(completedChallenges: string[]): number {
+  return ROOM_UNLOCK_ORDER.filter(room => isRoomUnlocked(room, completedChallenges)).length;
+}
+
+// Calculate phase based on completion (not XP)
+export function calculatePhase(completedChallenges: string[]): Phase {
+  const allEngineer = CHALLENGES.filter(c => c.phase === 'engineer');
+  const allEngineerComplete = allEngineer.every(c => completedChallenges.includes(c.id));
+  if (allEngineerComplete) return 'architect';
+
+  const allOperator = CHALLENGES.filter(c => c.phase === 'operator');
+  const allOperatorComplete = allOperator.every(c => completedChallenges.includes(c.id));
+  if (allOperatorComplete) return 'engineer';
+
+  return 'operator';
+}
+
+// Updated getAvailableChallenges with new progression rules
 export function getAvailableChallenges(completedIds: string[]): Challenge[] {
-  return CHALLENGES.filter(c =>
-    c.prerequisites.every(prereq => completedIds.includes(prereq))
-  );
+  const currentPhase = calculatePhase(completedIds);
+
+  return CHALLENGES.filter(challenge => {
+    // Already completed - still show but don't filter out
+    if (completedIds.includes(challenge.id)) return false;
+
+    // Room must be unlocked
+    if (!isRoomUnlocked(challenge.room, completedIds)) return false;
+
+    // Phase restrictions
+    if (challenge.phase === 'engineer' && currentPhase === 'operator') return false;
+    if (challenge.phase === 'architect' && currentPhase !== 'architect') return false;
+
+    // Prerequisites must be met
+    if (!challenge.prerequisites.every(p => completedIds.includes(p))) return false;
+
+    return true;
+  });
 }
 
 export function getSkillsByRoom(room: RoomId): Skill[] {
@@ -2367,6 +3286,7 @@ export function calculateXP(completedChallenges: string[]): number {
     .reduce((sum, c) => sum + c.xpReward, 0);
 }
 
+// Legacy function - kept for compatibility but prefer calculatePhase for progression
 export function getPhaseForXP(xp: number): Phase {
   if (xp >= 2000) return 'architect';
   if (xp >= 800) return 'engineer';

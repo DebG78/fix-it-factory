@@ -1,7 +1,19 @@
 import { useGame } from '@/context/GameContext';
-import { CHALLENGES } from '@/data/challenges';
+import { CHALLENGES, calculatePhase, isRoomUnlocked, getUnlockedRoomCount } from '@/data/challenges';
 import { XP_LEVELS } from '@/types';
-import type { RoomId, SystemStatus, GameState } from '@/types';
+import type { RoomId, SystemStatus, GameState, Phase } from '@/types';
+
+const PHASE_ICONS: Record<Phase, string> = {
+  operator: '👀',
+  engineer: '🔧',
+  architect: '🏗️',
+};
+
+const PHASE_NAMES: Record<Phase, string> = {
+  operator: 'Operator',
+  engineer: 'Engineer',
+  architect: 'Architect',
+};
 import styles from './Dashboard.module.css';
 
 const ROOM_ORDER: RoomId[] = ['tutorial', 'upload', 'clean', 'store', 'brain', 'screens'];
@@ -65,6 +77,26 @@ export default function Dashboard() {
   const xpNeeded = nextLevelXP - currentLevelXP;
   const xpPercent = xpNeeded > 0 ? Math.round((xpProgress / xpNeeded) * 100) : 100;
 
+  // Calculate phase from completion status
+  const currentPhase = calculatePhase(progression.completedChallenges);
+
+  // Calculate rooms unlocked
+  const roomsUnlocked = getUnlockedRoomCount(progression.completedChallenges);
+
+  // Calculate progress per phase
+  const phaseProgress = (['operator', 'engineer', 'architect'] as Phase[]).map((phase) => {
+    const phaseChallenges = CHALLENGES.filter((c) => c.phase === phase);
+    const completedInPhase = phaseChallenges.filter((c) =>
+      progression.completedChallenges.includes(c.id)
+    ).length;
+    return {
+      phase,
+      total: phaseChallenges.length,
+      completed: completedInPhase,
+      percent: phaseChallenges.length > 0 ? Math.round((completedInPhase / phaseChallenges.length) * 100) : 0,
+    };
+  });
+
   return (
     <div className={styles.dashboard}>
       <header className={styles.header}>
@@ -87,6 +119,12 @@ export default function Dashboard() {
               <div className={styles.statBox}>
                 <span className={styles.statValue}>{progression.level}</span>
                 <span className={styles.statLabel}>Level</span>
+              </div>
+              <div className={`${styles.statBox} ${styles.phaseStatBox}`}>
+                <span className={styles.statValue}>
+                  {PHASE_ICONS[currentPhase]} {PHASE_NAMES[currentPhase]}
+                </span>
+                <span className={styles.statLabel}>Phase</span>
               </div>
               <div className={styles.statBox}>
                 <span className={styles.statValue}>{progression.xp}</span>
@@ -117,28 +155,69 @@ export default function Dashboard() {
               </div>
             </div>
 
+            {/* Phase Progress */}
+            <div className={styles.phaseProgressSection}>
+              <h3 className={styles.sectionSubtitle}>Phase Progress ({roomsUnlocked}/6 rooms unlocked)</h3>
+              <div className={styles.phaseProgressGrid}>
+                {phaseProgress.map(({ phase, total, completed, percent }) => {
+                  const isLocked = (phase === 'engineer' && currentPhase === 'operator') ||
+                                   (phase === 'architect' && currentPhase !== 'architect');
+                  return (
+                    <div
+                      key={phase}
+                      className={`${styles.phaseProgressCard} ${phase === currentPhase ? styles.currentPhase : ''} ${completed === total && total > 0 ? styles.phaseComplete : ''}`}
+                    >
+                      <div className={styles.phaseProgressHeader}>
+                        <span className={styles.phaseProgressIcon}>{PHASE_ICONS[phase]}</span>
+                        <span className={styles.phaseProgressName}>{PHASE_NAMES[phase]}</span>
+                        <span className={styles.phaseProgressCount}>
+                          {isLocked ? '🔒' : `${completed}/${total}`}
+                        </span>
+                      </div>
+                      <div className={styles.phaseProgressBar}>
+                        <div
+                          className={styles.phaseProgressFill}
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                      <div className={styles.phaseXpRange}>
+                        {phase === 'operator' && 'Understand the system'}
+                        {phase === 'engineer' && 'Debug the system'}
+                        {phase === 'architect' && 'Design the system'}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Room Progress */}
             <div className={styles.roomProgressSection}>
               <h3 className={styles.sectionSubtitle}>Room Completion</h3>
               <div className={styles.roomProgressGrid}>
-                {roomProgress.map(({ roomId, total, completed, percent }) => (
-                  <div
-                    key={roomId}
-                    className={`${styles.roomProgressCard} ${completed === total && total > 0 ? styles.roomComplete : ''}`}
-                  >
-                    <div className={styles.roomProgressHeader}>
-                      <span className={styles.roomProgressIcon}>{ROOM_ICONS[roomId]}</span>
-                      <span className={styles.roomProgressName}>{roomId.charAt(0).toUpperCase() + roomId.slice(1)}</span>
-                      <span className={styles.roomProgressCount}>{completed}/{total}</span>
+                {roomProgress.map(({ roomId, total, completed, percent }) => {
+                  const unlocked = isRoomUnlocked(roomId, progression.completedChallenges);
+                  return (
+                    <div
+                      key={roomId}
+                      className={`${styles.roomProgressCard} ${completed === total && total > 0 ? styles.roomComplete : ''} ${!unlocked ? styles.roomLocked : ''}`}
+                    >
+                      <div className={styles.roomProgressHeader}>
+                        <span className={styles.roomProgressIcon}>{ROOM_ICONS[roomId]}</span>
+                        <span className={styles.roomProgressName}>{roomId.charAt(0).toUpperCase() + roomId.slice(1)}</span>
+                        <span className={styles.roomProgressCount}>
+                          {unlocked ? `${completed}/${total}` : '🔒'}
+                        </span>
+                      </div>
+                      <div className={styles.roomProgressBar}>
+                        <div
+                          className={styles.roomProgressFill}
+                          style={{ width: unlocked ? `${percent}%` : '0%' }}
+                        />
+                      </div>
                     </div>
-                    <div className={styles.roomProgressBar}>
-                      <div
-                        className={styles.roomProgressFill}
-                        style={{ width: `${percent}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
