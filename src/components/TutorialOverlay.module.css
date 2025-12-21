@@ -1,0 +1,197 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.dialog {
+  position: relative;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0 40px rgba(0, 212, 170, 0.2);
+  animation: slideIn 0.3s ease;
+}
+
+.dialog.animating {
+  opacity: 0.5;
+  transform: scale(0.98);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.position-center {
+  /* Default center position */
+}
+
+.position-left {
+  margin-right: auto;
+  margin-left: 200px;
+}
+
+.position-right {
+  margin-left: auto;
+  margin-right: 40px;
+}
+
+.position-bottom {
+  margin-top: auto;
+  margin-bottom: 220px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.stepIndicator {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  background-color: rgba(0, 212, 170, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.skipBtn {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color var(--transition-fast);
+}
+
+.skipBtn:hover {
+  color: var(--text-secondary);
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.content {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: var(--spacing-lg);
+}
+
+.content p {
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.content p:last-child {
+  margin-bottom: 0;
+}
+
+.content p:empty {
+  height: var(--spacing-sm);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.prevBtn,
+.nextBtn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.prevBtn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+}
+
+.prevBtn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.nextBtn {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  border: none;
+}
+
+.nextBtn:hover {
+  background-color: var(--accent-highlight);
+}
+
+.progress {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.progressDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--border-primary);
+  transition: all var(--transition-fast);
+}
+
+.progressDot.active {
+  background-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-primary);
+}
+
+.progressDot.completed {
+  background-color: var(--accent-secondary);
+}
+
+/* Highlight effects for specific areas */
+.highlight-sidebar {
+  /* Create a cutout effect for the sidebar */
+}
+
+.highlight-diagnostics {
+  /* Highlight diagnostics panel */
+}
+
+.highlight-upload-room {
+  /* Highlight upload room in sidebar */
+}

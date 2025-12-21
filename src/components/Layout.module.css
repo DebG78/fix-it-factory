@@ -1,0 +1,47 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.workspace {
+  flex: 1;
+  overflow: auto;
+  padding: var(--spacing-md);
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border-primary);
+}
+
+.helpButton {
+  position: fixed;
+  bottom: 220px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+  transition: all var(--transition-fast);
+  z-index: 100;
+}
+
+.helpButton:hover {
+  background-color: var(--accent-highlight);
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 212, 170, 0.4);
+}
