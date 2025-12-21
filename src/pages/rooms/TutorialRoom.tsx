@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useGame } from '@/context/GameContext';
 import ChallengeList from '@/components/ChallengeList';
 import styles from './Room.module.css';
@@ -11,6 +11,7 @@ interface Concept {
   analogy: string;
   howItWorks: string[];
   inCalibrateKindly: string;
+  challengeId: string; // Maps to the challenge that proves this concept is learned
   example?: {
     title: string;
     code?: string;
@@ -23,6 +24,7 @@ const CONCEPTS: Concept[] = [
     id: 'web-app',
     title: 'What is a Web App?',
     icon: '🌐',
+    challengeId: 'tutorial-1-what-is-webapp',
     description: 'A web application is software that runs in your browser. Unlike apps you install, web apps live on the internet and you access them through URLs.',
     analogy: 'Think of it like a restaurant. The menu (website) shows you options, you place an order (request), the kitchen (server) prepares it, and the waiter brings your food (response). You don\'t need to own the kitchen - you just visit!',
     howItWorks: [
@@ -37,6 +39,7 @@ const CONCEPTS: Concept[] = [
     id: 'frontend-backend',
     title: 'Frontend vs Backend',
     icon: '🎭',
+    challengeId: 'tutorial-2-frontend-backend',
     description: 'The frontend is what users see and interact with (buttons, forms, charts). The backend is the hidden machinery that stores data, processes requests, and enforces rules.',
     analogy: 'Frontend is like a bank\'s lobby - the counters, forms, and friendly tellers. Backend is the vault, the computers processing transactions, and the security systems. Customers interact with the lobby, but the real work happens behind the scenes.',
     howItWorks: [
@@ -55,6 +58,7 @@ const CONCEPTS: Concept[] = [
     id: 'components',
     title: 'Components',
     icon: '🧩',
+    challengeId: 'tutorial-3-components',
     description: 'Components are reusable building blocks of a user interface. Instead of writing the same code for every button, you create a Button component and reuse it.',
     analogy: 'Components are like LEGO bricks. Each brick (component) has a specific shape and purpose. You combine them to build complex structures. Need another window in your LEGO house? Just grab another window brick!',
     howItWorks: [
@@ -80,6 +84,7 @@ const CONCEPTS: Concept[] = [
     id: 'state',
     title: 'State',
     icon: '🔄',
+    challengeId: 'tutorial-4-data-flow',
     description: 'State is data that can change over time. When state changes, the UI automatically updates to reflect the new data. This is what makes apps feel "alive".',
     analogy: 'State is like a scoreboard at a sports game. When a team scores, the scoreboard updates immediately. Everyone watching sees the change. The scoreboard "reacts" to events.',
     howItWorks: [
@@ -103,6 +108,7 @@ setCount(count + 1);
     id: 'api',
     title: 'APIs',
     icon: '🔌',
+    challengeId: 'tutorial-5-api',
     description: 'An API (Application Programming Interface) is how different software systems talk to each other. It defines what requests you can make and what responses you\'ll get.',
     analogy: 'An API is like a waiter at a restaurant. You (the frontend) don\'t go into the kitchen (database) yourself. You tell the waiter (API) what you want, and they bring it to you. The menu is the API documentation - it tells you what\'s available.',
     howItWorks: [
@@ -125,6 +131,7 @@ const reviews = await response.json();
     id: 'database',
     title: 'Databases',
     icon: '🗄️',
+    challengeId: 'tutorial-6-database',
     description: 'A database is organized storage for data. It\'s like a giant spreadsheet with superpowers - it can store millions of rows, search instantly, and maintain relationships between data.',
     analogy: 'A database is like a library. Books (records) are organized in sections (tables). The catalog system (indexes) helps you find books quickly. The librarian (database engine) enforces rules - you can\'t take restricted books without permission.',
     howItWorks: [
@@ -146,6 +153,7 @@ AND mqi_score < 50;`,
     id: 'authentication',
     title: 'Authentication & Authorization',
     icon: '🔐',
+    challengeId: 'tutorial-7-authentication',
     description: 'Authentication proves WHO you are (login). Authorization determines WHAT you can do (permissions). Together they protect your data.',
     analogy: 'Authentication is showing your ID at a nightclub door (proving who you are). Authorization is the VIP section - even if you\'re in the club, you might not have access to every area.',
     howItWorks: [
@@ -160,6 +168,7 @@ AND mqi_score < 50;`,
     id: 'data-flow',
     title: 'Data Flow',
     icon: '🌊',
+    challengeId: 'tutorial-8-ck-overview',
     description: 'Data flows through an application like water through pipes. Understanding this flow helps you debug issues and build new features.',
     analogy: 'Imagine a factory assembly line. Raw materials (user input) enter, get processed at different stations (components, backend), and finished products (UI updates) come out. If something breaks, you trace back along the line to find the problem.',
     howItWorks: [
@@ -177,20 +186,19 @@ AND mqi_score < 50;`,
 ];
 
 export default function TutorialRoom() {
-  const { addLog } = useGame();
+  const { state, addLog } = useGame();
   const [selectedConcept, setSelectedConcept] = useState<Concept | null>(null);
-  const [completedConcepts, setCompletedConcepts] = useState<string[]>([]);
+
+  // Derive completed concepts from completed challenges
+  const completedConcepts = useMemo(() => {
+    return CONCEPTS
+      .filter(concept => state.progression.completedChallenges.includes(concept.challengeId))
+      .map(concept => concept.id);
+  }, [state.progression.completedChallenges]);
 
   const handleConceptClick = (concept: Concept) => {
     setSelectedConcept(concept);
     addLog('info', 'tutorial', `Exploring concept: ${concept.title}`);
-  };
-
-  const markAsLearned = (conceptId: string) => {
-    if (!completedConcepts.includes(conceptId)) {
-      setCompletedConcepts((prev) => [...prev, conceptId]);
-      addLog('info', 'tutorial', `Concept learned: ${CONCEPTS.find(c => c.id === conceptId)?.title}`);
-    }
   };
 
   const progress = Math.round((completedConcepts.length / CONCEPTS.length) * 100);
@@ -284,13 +292,15 @@ export default function TutorialRoom() {
                 </div>
               )}
 
-              <button
-                className={`${styles.learnedBtn} ${completedConcepts.includes(selectedConcept.id) ? styles.alreadyLearned : ''}`}
-                onClick={() => markAsLearned(selectedConcept.id)}
-                disabled={completedConcepts.includes(selectedConcept.id)}
-              >
-                {completedConcepts.includes(selectedConcept.id) ? 'Learned!' : 'Mark as Learned'}
-              </button>
+              {completedConcepts.includes(selectedConcept.id) ? (
+                <div className={styles.learnedBtn + ' ' + styles.alreadyLearned}>
+                  ✓ Mastered via Challenge
+                </div>
+              ) : (
+                <div className={styles.challengeHint}>
+                  Complete the related challenge below to master this concept
+                </div>
+              )}
             </div>
           ) : (
             <div className={styles.emptyState}>
