@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGame } from '@/context/GameContext';
-import { SKILLS, getChallengesByRoom, getAvailableChallenges, isRoomUnlocked, calculatePhase } from '@/data/challenges';
+import { SKILLS, getChallengesByRoom, getAvailableChallenges, isRoomUnlocked, calculatePhase, CHALLENGES } from '@/data/challenges';
 import type { RoomId } from '@/types';
 import type { Challenge } from '@/data/challenges';
 import ChallengePanel from './ChallengePanel';
@@ -91,6 +91,39 @@ export default function ChallengeList({ room }: ChallengeListProps) {
     }
   };
 
+  // Get the reason why a challenge is locked
+  const getLockReason = (challenge: Challenge): string => {
+    // Check if phase is locked
+    if (challenge.phase === 'engineer' && currentPhase === 'operator') {
+      return 'Complete all Operator challenges first';
+    }
+    if (challenge.phase === 'architect' && currentPhase !== 'architect') {
+      return 'Complete all Engineer challenges first';
+    }
+
+    // Check prerequisites
+    const missingPrereqs = challenge.prerequisites.filter(
+      prereqId => !state.progression.completedChallenges.includes(prereqId)
+    );
+
+    if (missingPrereqs.length > 0) {
+      // Find the challenge titles for the missing prerequisites
+      const missingTitles = missingPrereqs
+        .map(prereqId => {
+          const found = CHALLENGES.find(c => c.id === prereqId);
+          return found ? `"${found.title}"` : prereqId;
+        })
+        .slice(0, 2); // Show max 2 prerequisites
+
+      if (missingPrereqs.length > 2) {
+        return `Complete ${missingTitles.join(', ')} +${missingPrereqs.length - 2} more`;
+      }
+      return `Complete ${missingTitles.join(' and ')}`;
+    }
+
+    return 'Complete previous challenges';
+  };
+
   const displayedChallenges: Challenge[] = showAll ? roomChallenges : roomChallenges.slice(0, 3);
 
   // Generate unlock message based on what's needed
@@ -165,6 +198,9 @@ export default function ChallengeList({ room }: ChallengeListProps) {
                   )}
                 </div>
                 <p className={styles.symptom}>{challenge.scenario.symptom}</p>
+                {status === 'locked' && (
+                  <p className={styles.lockReason}>{getLockReason(challenge)}</p>
+                )}
               </button>
             );
           })}

@@ -154,6 +154,15 @@
   overflow: hidden;
 }
 
+.lockReason {
+  font-size: 10px;
+  color: var(--status-warning);
+  margin: 0;
+  padding-top: var(--spacing-xs);
+  border-top: 1px dashed var(--border-primary);
+  margin-top: var(--spacing-xs);
+}
+
 .showMore {
   width: 100%;
   padding: var(--spacing-sm);
@@ -236,5 +245,9 @@
 
   .symptom {
     font-size: 10px;
+  }
+
+  .lockReason {
+    font-size: 9px;
   }
 }
