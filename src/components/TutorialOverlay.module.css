@@ -186,12 +186,66 @@
 /* Highlight effects for specific areas */
 .highlight-sidebar {
   /* Create a cutout effect for the sidebar */
+  clip-path: polygon(
+    0% 0%, 0% 100%, 180px 100%, 180px 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%
+  );
 }
 
 .highlight-diagnostics {
-  /* Highlight diagnostics panel */
+  /* Highlight diagnostics panel - bottom area */
+  clip-path: polygon(
+    0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% calc(100% - 200px), 0% calc(100% - 200px), 0% 0%
+  );
 }
 
 .highlight-upload-room {
-  /* Highlight upload room in sidebar */
+  /* Highlight upload room in sidebar - second room item */
+  box-shadow:
+    0 0 0 9999px rgba(0, 0, 0, 0.85),
+    0 0 20px 5px rgba(0, 212, 170, 0.4);
+  clip-path: inset(0);
+  background: transparent;
+}
+
+.highlight-upload-room::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 175px;
+  width: 180px;
+  height: 36px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
+  border: 2px solid var(--accent-primary);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.highlight-tutorial-room {
+  /* Highlight tutorial room in sidebar - first room item */
+  background: transparent;
+}
+
+.highlight-tutorial-room::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 139px;
+  width: 180px;
+  height: 36px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
+  border: 2px solid var(--accent-primary);
+  border-radius: 4px;
+  animation: tutorialPulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes tutorialPulse {
+  0%, 100% {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 10px var(--accent-primary);
+  }
+  50% {
+    border-color: var(--accent-highlight);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85), 0 0 20px var(--accent-highlight);
+  }
 }

@@ -62,14 +62,14 @@ Watch these to spot problems quickly.`,
   {
     id: 'first-mission',
     title: 'Your First Mission',
-    content: `Let's start with the UPLOAD room.
+    content: `Let's start with the TUTORIAL room.
 
-Click "Upload" in the sidebar to begin.
+Click "Tutorial" in the sidebar to begin.
 
-Your goal: Understand what happens when a dataset is uploaded, and what can go wrong.
+Your goal: Learn the basics of how data flows through the system and practice debugging in a guided environment.
 
-Try both "Simulate Valid Upload" and "Simulate Schema Error" to see the difference.`,
-    highlight: 'upload-room',
+The tutorial will walk you through each concept step by step.`,
+    highlight: 'tutorial-room',
     position: 'center',
   },
 ];
